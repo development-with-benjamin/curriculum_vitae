@@ -1,0 +1,635 @@
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+%	The MIT License (MIT)
+%
+%	Copyright (c) 2019 Jan Küster
+%
+%	Permission is hereby granted, free of charge, to any person obtaining a copy
+%	of this software and associated documentation files (the "Software"), to deal
+%	in the Software without restriction, including without limitation the rights
+%	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%	copies of the Software, and to permit persons to whom the Software is
+%	furnished to do so, subject to the following conditions:
+%	
+%	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+%	THE SOFTWARE.
+%	
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+
+
+%============================================================================%
+%
+%	DOCUMENT DEFINITION
+%
+%============================================================================%
+
+%we use article class because we want to fully customize the page and don't use a cv template
+\documentclass[10pt,A4]{article}	
+
+
+%----------------------------------------------------------------------------------------
+%	ENCODING
+%----------------------------------------------------------------------------------------
+
+% we use utf8 since we want to build from any machine
+\usepackage[utf8]{inputenc}		
+
+%----------------------------------------------------------------------------------------
+%	LOGIC
+%----------------------------------------------------------------------------------------
+
+% provides \isempty test
+\usepackage{xstring, xifthen}
+
+%----------------------------------------------------------------------------------------
+%	FONT BASICS
+%----------------------------------------------------------------------------------------
+
+% some tex-live fonts - choose your own
+
+%\usepackage[defaultsans]{droidsans}
+%\usepackage[default]{comfortaa}
+%\usepackage{cmbright}
+\usepackage[default]{raleway}
+%\usepackage{fetamont}
+%\usepackage[default]{gillius}
+%\usepackage[light,math]{iwona}
+%\usepackage[thin]{roboto} 
+
+% set font default
+\renewcommand*\familydefault{\sfdefault} 	
+\usepackage[T1]{fontenc}
+
+% more font size definitions
+\usepackage{moresize}
+
+%----------------------------------------------------------------------------------------
+%	FONT AWESOME ICONS
+%---------------------------------------------------------------------------------------- 
+
+% include the fontawesome icon set
+\usepackage{fontawesome}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{\includegraphics{#1}}%
+\parbox{\wd0}{\box0}\endgroup}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand*{\vcenteredhbox}[1]{\begingroup
+\setbox0=\hbox{#1}\parbox{\wd0}{\box0}\endgroup}
+
+% icon shortcut
+\newcommand{\icon}[3] { 							
+	\makebox(#2, #2){\textcolor{maincol}{\csname fa#1\endcsname}}
+}	
+
+% icon with text shortcut
+\newcommand{\icontext}[4]{ 						
+	\vcenteredhbox{\icon{#1}{#2}{#3}}  \hspace{2pt}  \parbox{0.9\mpwidth}{\textcolor{#4}{#3}}
+}
+
+% icon with website url
+\newcommand{\iconhref}[5]{ 						
+    \vcenteredhbox{\icon{#1}{#2}{#5}}  \hspace{2pt} \href{#4}{\textcolor{#5}{#3}}
+}
+
+% icon with email link
+\newcommand{\iconemail}[5]{ 						
+    \vcenteredhbox{\icon{#1}{#2}{#5}}  \hspace{2pt} \href{mailto:#4}{\textcolor{#5}{#3}}
+}
+
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT  DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+% page outer frames (debug-only)
+% \usepackage{showframe}		
+
+% we use paracol to display breakable two columns
+\usepackage{paracol}
+
+% define page styles using geometry
+\usepackage[a4paper]{geometry}
+
+% remove all possible margins
+\geometry{top=1cm, bottom=1cm, left=1cm, right=1cm}
+
+\usepackage{fancyhdr}
+\pagestyle{empty}
+
+% space between header and content
+% \setlength{\headheight}{0pt}
+
+% indentation is zero
+\setlength{\parindent}{0mm}
+
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+% extended aligning of tabular cells
+\usepackage{array}
+
+% custom column right-align with fixed width
+% use like p{size} but via x{size}
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+
+%----------------------------------------------------------------------------------------
+%	GRAPHICS DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+%for header image
+\usepackage{graphicx}
+
+% use this for floating figures
+% \usepackage{wrapfig}
+% \usepackage{float}
+% \floatstyle{boxed} 
+% \restylefloat{figure}
+
+%for drawing graphics		
+\usepackage{tikz}				
+\usetikzlibrary{shapes, backgrounds,mindmap, trees}
+
+%----------------------------------------------------------------------------------------
+%	Color DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{transparent}
+\usepackage{color}
+
+% primary color
+\definecolor{maincol}{RGB}{ 45, 50, 90 }
+
+% accent color, secondary
+% \definecolor{accentcol}{RGB}{ 250, 150, 10 }
+
+% dark color
+\definecolor{darkcol}{RGB}{ 70, 70, 70 }
+
+% light color
+\definecolor{lightcol}{RGB}{245,245,245}
+
+
+% Package for links, must be the last package used
+\usepackage[hidelinks]{hyperref}
+
+% returns minipage width minus two times \fboxsep
+% to keep padding included in width calculations
+% can also be used for other boxes / environments
+\newcommand{\mpwidth}{\linewidth-\fboxsep-\fboxsep}
+	
+
+
+%============================================================================%
+%
+%	CV COMMANDS
+%
+%============================================================================%
+
+%----------------------------------------------------------------------------------------
+%	 CV LIST
+%----------------------------------------------------------------------------------------
+
+% renders a standard latex list but abstracts away the environment definition (begin/end)
+\newcommand{\cvlist}[1] {
+	\begin{itemize}{#1}\end{itemize}
+}
+
+%----------------------------------------------------------------------------------------
+%	 CV TEXT
+%----------------------------------------------------------------------------------------
+
+% base class to wrap any text based stuff here. Renders like a paragraph.
+% Allows complex commands to be passed, too.
+% param 1: *any
+\newcommand{\cvtext}[1] {
+	\begin{tabular*}{1\mpwidth}{p{0.98\mpwidth}}
+		\parbox{1\mpwidth}{#1}
+	\end{tabular*}
+}
+
+%----------------------------------------------------------------------------------------
+%	CV SECTION
+%----------------------------------------------------------------------------------------
+
+% Renders a a CV section headline with a nice underline in main color.
+% param 1: section title
+\newcommand{\cvsection}[1] {
+	\vspace{14pt}
+	\cvtext{
+		\textbf{\LARGE{\textcolor{darkcol}{\uppercase{#1}}}}\\[-4pt]
+		\textcolor{maincol}{ \rule{0.1\textwidth}{2pt} } \\
+	}
+}
+
+%----------------------------------------------------------------------------------------
+%	META SKILL
+%----------------------------------------------------------------------------------------
+
+% Renders a progress-bar to indicate a certain skill in percent.
+% param 1: name of the skill / tech / etc.
+% param 2: level (for example in years)
+% param 3: percent, values range from 0 to 1
+\newcommand{\cvskill}[3] {
+	\begin{tabular*}{1\mpwidth}{p{0.72\mpwidth}  r}
+ 		\textcolor{black}{\textbf{#1}} & \textcolor{maincol}{#2}\\
+	\end{tabular*}%
+	
+	\hspace{4pt}
+	\begin{tikzpicture}[scale=1,rounded corners=2pt,very thin]
+		\fill [lightcol] (0,0) rectangle (1\mpwidth, 0.15);
+		\fill [maincol] (0,0) rectangle (#3\mpwidth, 0.15);
+  	\end{tikzpicture}%
+}
+
+
+%----------------------------------------------------------------------------------------
+%	 CV EVENT
+%----------------------------------------------------------------------------------------
+
+% Renders a table and a paragraph (cvtext) wrapped in a parbox (to ensure minimum content
+% is glued together when a pagebreak appears).
+% Additional Information can be passed in text or list form (or other environments).
+% the work you did
+% param 1: time-frame i.e. Sep 14 - Jan 15 etc.
+% param 2:	 event name (job position etc.)
+% param 3: Customer, Employer, Industry
+% param 4: Short description
+% param 5: work done (optional)
+% param 6: technologies include (optional)
+% param 7: achievements (optional)
+\newcommand{\cvevent}[7] {
+
+	% we wrap this part in a parbox, so title and description are not separated on a pagebreak
+	% if you need more control on page breaks, remove the parbox
+	\parbox{\mpwidth}{
+		\begin{tabular*}{1\mpwidth}{p{0.72\mpwidth}  r}
+	 		\textcolor{black}{\textbf{#2}} & \colorbox{maincol}{\makebox[0.25\mpwidth]{\textcolor{white}{#1}}} \\
+			\textcolor{maincol}{\textbf{#3}} & \\
+		\end{tabular*}\\[4pt]
+	
+		\ifthenelse{\isempty{#4}}{}{
+			\cvtext{#4}\\
+		}
+	}
+
+	\ifthenelse{\isempty{#5}}{}{
+		\vspace{4pt}
+		{#5}
+	}
+	\vspace{4pt}
+}
+
+%----------------------------------------------------------------------------------------
+%	 CV META EVENT
+%----------------------------------------------------------------------------------------
+
+% Renders a CV event on the sidebar
+% param 1: title
+% param 2: subtitle (optional)
+% param 3: customer, employer, etc,. (optional)
+% param 4: info text (optional)
+\newcommand{\cvmetaevent}[4] {
+	\textcolor{maincol} {\cvtext{\textbf{\begin{flushleft}#1\end{flushleft}}}}
+
+	\ifthenelse{\isempty{#2}}{}{
+	\textcolor{darkcol} {\cvtext{\textbf{#2}} }
+	}
+
+	\ifthenelse{\isempty{#3}}{}{
+		\cvtext{{ \textcolor{darkcol} {#3} }}\\
+	}
+
+	\cvtext{#4}\\[14pt]
+}
+
+%---------------------------------------------------------------------------------------
+%	QR CODE
+%----------------------------------------------------------------------------------------
+
+% Renders a qrcode image (centered, relative to the parentwidth)
+% param 1: percent width, from 0 to 1
+\newcommand{\cvqrcode}[1] {
+	\begin{center}
+		\includegraphics[width={#1}\mpwidth]{qrcode}
+	\end{center}
+}
+
+%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+%,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+                       % EDIT AFTER THIS POINT
+%''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+%=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT CONTENT
+%
+%
+%
+%============================================================================%
+\begin{document}
+\columnratio{0.31}
+\setlength{\columnsep}{2.2em}
+\setlength{\columnseprule}{4pt}
+\colseprulecolor{lightcol}
+\begin{paracol}{2}
+\begin{leftcolumn}
+%---------------------------------------------------------------------------------------
+%	META IMAGE
+%----------------------------------------------------------------------------------------
+%\includegraphics[width=\linewidth]{untitled.jpg}	%trimming relative to image size
+
+
+\vfill\null
+\cvsection{CONTACT}
+	
+\iconemail{EnvelopeSquare}{14}{\small{benjamin.halilovic@stud.plus.ac.at}}{benjamin.halilovic@stud.plus.ac.at}{black}\\[6pt]
+\icontext{Github}{14}{\href{https://github.com/development-with-benjamin}{Development with Benjamin}}{black}\\[6pt]
+\icontext{Linkedin}{14}{\href{https://www.linkedin.com/in/primemaster/}{Benjamin Halilovic}}{black}\\[6pt]
+\icontext{Phone}{14}{+43660/1600002}{black}\\[6pt]
+\vfill\null
+%\cvqrcode{0.7}
+
+%---------------------------------------------------------------------------------------
+%	META SKILLS
+%----------------------------------------------------------------------------------------
+\cvsection{Computational Skills}
+
+%\cvskill{Skill_Name} {Years of experience} {percentage of bar fill} \\[-2pt]
+
+\cvskill{Python} {} {1} \\[-2pt]
+
+\cvskill{C/C++} {} {0.8} \\[-2pt]
+
+\cvskill{Javascript} {} {0.4} \\[-2pt]
+
+\cvskill{Linux} {} {1} \\[-2pt]
+
+\cvskill{Embedded Systems} {} {0.6} \\[-2pt]
+
+\cvskill{Machine Learning} {} {0.8} \\[-2pt]
+
+\cvskill{Signal Processing} {} {0.7} \\[-2pt]
+
+\cvsection{Languages}
+
+%\cvskill{Skill_Name} {Years of experience} {percentage of bar fill} \\[-2pt]
+
+\cvskill{German} {Native} {0.99} \\[-2pt]
+
+\cvskill{Bosnian} {Native} {1} \\[-2pt]
+
+\cvskill{English} {C1} {0.9} \\[-2pt]
+
+\cvskill{Russian} {A2} {0.3} \\[-2pt]
+
+%\vfill\null
+%\cvqrcode{0.7}
+
+%---------------------------------------------------------------------------------------
+%	ACHIEVEMENTS
+%----------------------------------------------------------------------------------------
+\newpage
+\cvsection{Hobbies}
+
+\cvmetaevent
+{Chess}
+{\href{https://ratings.fide.com/profile/1682024}{Registered Chess Player}}
+{}
+{Split Chess Open Croatia 2022\\
+Hallein Keltenschach 2023}
+
+\cvmetaevent
+{Competitive Programming}
+{Preferably coding in C++}
+{}
+{Google Hashcode\\
+\href{https://github.com/development-with-benjamin/adventofcode}{Advent of Code}\\
+\href{https://codeforces.com/profile/user12345678}{Codeforces}}
+
+\cvmetaevent
+{Hiking}
+{With Friends \& Family}
+{}
+{Schafberg\\
+Traunstein\\
+Sonnenstein\\
+Gaisberg}
+
+\end{leftcolumn}
+\begin{rightcolumn}
+%---------------------------------------------------------------------------------------
+%	TITLE  HEADER
+%----------------------------------------------------------------------------------------
+\fcolorbox{white}{darkcol}{\begin{minipage}[c][3.5cm][c]{1\mpwidth}
+	\begin {center}
+		\HUGE{ \textbf{ \textcolor{white}{ \uppercase{ Benjamin Halilovic } } } } \\[-24pt]
+		\textcolor{white}{ \rule{0.1\textwidth}{1.25pt} } \\[4pt]
+		\large{ \textcolor{white} {Software Engineer - Machine Learning \& Signal Processing} }
+	\end {center}
+\end{minipage}} \\[14pt]
+\vspace{-12pt}
+
+%---------------------------------------------------------------------------------------
+%	EDUCATION
+%----------------------------------------------------------------------------------------
+%\vfill\null
+\cvsection{EDUCATION}
+
+\cvevent
+    {\textbf{2022 - ongoing}}
+    {\small{MSc. in Applied Image and Signal Processing}}
+    {Paris Lodron University of Salzburg \newline University of Applied Sciences of Salzburg}
+    {\small{Master Thesis:} tbd}
+    {}
+\vfill\null
+
+\cvevent
+    {\textbf{2018 - 2022}}
+    {\small{BSc. in Information Technology and System Management}}
+    {University of Applied Sciences of Salzburg}
+    {\small{Bachelor Thesis: \newline Risk Level Mitigation of Ransomware through Vulnerability Management}}
+    {}
+\vfill\null
+
+\cvevent
+    {\textbf{2014 - 2018}}
+    {Electrical Engineering}
+    {HTBLuVA Salzburg}
+    {\small{High School Thesis: \newline Drehmomentbasierte Steuerung eines Elektromotorantriebes}}{}
+\vfill\null
+
+\cvevent
+	{\textbf{2009 - 2013}}
+	{\small{Apprenticeship: Elektrobetriebs- \& Prozessleittechniker}}
+	{\small{BZL Bildungszentrum Lenzing GmbH}}
+	{Examination: Graduated with success}{}
+\vfill\null
+
+%---------------------------------------------------------------------------------------
+%	WORK EXPERIENCE
+%----------------------------------------------------------------------------------------
+\cvsection{WORK EXPERIENCE}
+
+\cvevent
+	{\textbf{Mar '21 - ongoing}}
+	{Software Engineer for Quality Assurance}
+	{Commend International GmbH \newline Saalachstraße 86a, 5020 Salzburg }
+	{\begin{itemize}
+        \item \small{Development of Python Library for Test Automation of in House build Hardware and Technology Stack}
+        \item \small{Main emphasis on implementation of Algorithms for Audio Quality Assessment of Devices}
+        \item \small{Development of IT infrastructure modules in Python that enable interaction with audio measurement equipment}
+    \end{itemize}} {}
+\vfill\null
+\vspace{-8px}
+\cvevent
+	{\textbf{Aug '18 - Jan '21}}
+	{Junior IT Security Analyst}
+	{Red Bull GmbH \newline Elsbethener Hauptstraße 24, 5026 Elsbethen}
+    {\begin{itemize}
+        \item \small{Analyzing security incidents, correlating events to log sources, deciding on mitigation steps, coordinating and escalating tasks to responsible and necessary instances.}
+        \item \small{Improving security related services, like SIEM and monitoring tools by adapting security rule chains.}
+        \item \small{Managing of projects that improve the overall security landscape of the corporate infrastructure.}
+        \item \small{Coordinating implantation of improvements into IT infrastructure like LDAP protocols for authentication through Active Directory.}
+    \end{itemize}}
+	{}
+\vfill\null
+
+\cvevent
+	{\textbf{Sep '09 - Jul '14}}
+	{Maintenance Electrician}
+	{Lenzing AG \newline Werkstraße 2, 4860 Lenzing}
+    {\begin{itemize}
+        \item \small{Performing daily maintenance tasks for the process flow's measurement system of the company own energy production facilities}
+        \item \small{Improving security related services, like SIEM and monitoring tools by adapting security rule chains.}
+        \item \small{Managing projects that improve the overall security landscape of the corporate infrastructure.}
+        \item \small{Coordinating implantation of improvements into IT infrastructure like LDAP protocols for authentication through Active Directory.}
+    \end{itemize}}
+	{}
+\vfill\null
+%---------------------------------------------------------------------------------------
+%	PUBLICATION
+%----------------------------------------------------------------------------------------
+% \vspace{-0.5cm}
+% \vfill\null
+% \cvsection{PUBLICATIONS}
+
+% \cvevent
+% 	{\textbf{UGC Listed}}
+% 	{Title of your research paper}
+% 	{Journal Name (ISSN: XXXX-XXXX) Vol XX, Issue XX, 20XX}
+% 	{Status: Accepted and Published}
+% 	{}
+% \vfill\null
+
+% \cvevent
+% 	{\textbf{SCI - IF X.XXX}}
+% 	{Title of your research paper}
+% 	{Journal Name (ISSN: XXXX-XXXX) Vol XX, Issue XX, 20XX}
+% 	{Status: Under Review}
+% 	{}
+% \vfill\null
+
+% \cvevent
+% 	{\textbf{SCI - IF X.XXX}}
+% 	{Title of your research paper}
+% 	{Journal Name (ISSN: XXXX-XXXX) Vol XX, Issue XX, 20XX}
+% 	{Status: Under Review}
+% 	{}
+% \vfill\null
+% %---------------------------------------------------------------------------------------
+% %	PROJECTS
+% %----------------------------------------------------------------------------------------
+% \vfill\null
+% \cvsection{PROJECTS}
+
+% \cvevent
+% 	{\textbf{20XX}}
+% 	{Project Name}
+% 	{Tool: Python, Raspberry Pi}
+% 	{A short description of your project.}
+% \vfill\null
+
+
+% \cvevent
+% 	{\textbf{20XX}}
+% 	{Project Name}
+% 	{Tool: Web Development}
+% 	{A short description of your project.}
+% \vfill\null
+
+
+% \cvevent
+% 	{\textbf{20XX}}
+% 	{Project Name}
+% 	{Tool: Android Studio}
+% 	{A short description of your project.}
+% \vfill\null
+
+%---------------------------------------------------------------------------------------
+%	WORKSHOPS
+%----------------------------------------------------------------------------------------
+% \vfill\null
+% \cvsection{WORKSHOPS \& CONFERENCES}
+
+% \cvevent
+% 	{\textbf{Mon 20XX}}
+% 	{Name of Conference}
+% 	{Conducted by}
+% 	{}
+% \vfill\null
+
+% \cvevent
+% 	{\textbf{May 2019}}
+% 	{IEEE Internation Conference on Future of Internet of Things}
+% 	{IEEE \& IIT Kanpur}
+% 	{}
+% \vfill\null
+
+% \cvevent
+% 	{\textbf{Jul 2020}}
+% 	{Online International Workshop on Machine Learning Applications to Images, IoT and Wireless Sensor Networks}
+% 	{University of Essex and IIIT, Lucknow}
+% 	{}
+% \vfill\null
+%---------------------------------------------------------------------------------------
+%	SKILLS
+%----------------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------------------------
+%	PERSONAL DETAILS
+%----------------------------------------------------------------------------------------
+\vfill\null
+\cvsection{EXTRACURRICULAR}
+\vspace{-0.3cm}
+\begin{itemize}
+  \item ÖH FH Salzburg - Versanstaltungsreferent (2021 - 2022)
+  \item ÖH FH Salzburg - Veranstaltungsteammitglied (2018 - 2022)
+  \item Annual Advent of Code Participant
+  \item Volga CTF Finalist in Samara Russia (2019)
+\end{itemize}
+\vfill\null
+
+
+% hotfixes to create fake-space to ensure the whole height is used
+\vfill
+\vfill
+\vfill
+\end{rightcolumn}
+\end{paracol}
+\end{document}
+
