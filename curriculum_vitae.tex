@@ -37,7 +37,7 @@
 %----------------------------------------------------------------------------------------
 
 % we use utf8 since we want to build from any machine
-\usepackage[utf8]{inputenc}		
+\usepackage[utf8]{inputenc}
 
 %----------------------------------------------------------------------------------------
 %	LOGIC
@@ -52,14 +52,14 @@
 
 % some tex-live fonts - choose your own
 
-%\usepackage[defaultsans]{droidsans}
-%\usepackage[default]{comfortaa}
-%\usepackage{cmbright}
-\usepackage[default]{raleway}
-%\usepackage{fetamont}
-%\usepackage[default]{gillius}
-%\usepackage[light,math]{iwona}
-%\usepackage[thin]{roboto} 
+% \usepackage[defaultsans]{droidsans}
+% \usepackage[default]{comfortaa}
+% \usepackage{cmbright}
+% \usepackage[default]{raleway}
+% \usepackage{fetamont}
+% \usepackage[default]{gillius}
+\usepackage[light,math]{iwona}
+% \usepackage[thin]{roboto}
 
 % set font default
 \renewcommand*\familydefault{\sfdefault} 	
@@ -227,7 +227,7 @@
 \newcommand{\cvsection}[1] {
 	\vspace{14pt}
 	\cvtext{
-		\textbf{\LARGE{\textcolor{darkcol}{\uppercase{#1}}}}\\[-4pt]
+		\textbf{\LARGE{\textcolor{darkcol}{#1}}}\\[-4pt]
 		\textcolor{maincol}{ \rule{0.1\textwidth}{2pt} } \\
 	}
 }
@@ -357,9 +357,9 @@
 \vfill\null
 \cvsection{CONTACT}
 	
-\iconemail{EnvelopeSquare}{14}{\small{benjamin.halilovic@stud.plus.ac.at}}{benjamin.halilovic@stud.plus.ac.at}{black}\\[6pt]
+\iconemail{EnvelopeSquare}{14}{\small{benjamin.halilovic@protonmail.com}}{benjamin.halilovic@protonmail.com}{black}\\[6pt]
 \icontext{Github}{14}{\href{https://github.com/development-with-benjamin}{Development with Benjamin}}{black}\\[6pt]
-\icontext{Linkedin}{14}{\href{https://www.linkedin.com/in/primemaster/}{Benjamin Halilovic}}{black}\\[6pt]
+\icontext{Linkedin}{14}{\href{https://www.linkedin.com/in/benjoplusplus/}{Benjamin Halilovic}}{black}\\[6pt]
 \icontext{Phone}{14}{+43660/1600002}{black}\\[6pt]
 \vfill\null
 %\cvqrcode{0.7}
@@ -375,27 +375,27 @@
 
 \cvskill{C/C++} {} {0.8} \\[-2pt]
 
-\cvskill{Javascript} {} {0.4} \\[-2pt]
-
 \cvskill{Linux} {} {1} \\[-2pt]
 
 \cvskill{Embedded Systems} {} {0.6} \\[-2pt]
 
-\cvskill{Machine Learning} {} {0.8} \\[-2pt]
+\cvskill{Machine Learning} {} {0.9} \\[-2pt]
 
-\cvskill{Signal Processing} {} {0.7} \\[-2pt]
+\cvskill{Signal Processing} {} {0.9} \\[-2pt]
+
+\cvskill{Javascript} {} {0.2} \\[-2pt]
 
 \cvsection{Languages}
 
 %\cvskill{Skill_Name} {Years of experience} {percentage of bar fill} \\[-2pt]
 
-\cvskill{German} {Native} {0.99} \\[-2pt]
+\cvskill{German} {Native} {1} \\[-2pt]
 
 \cvskill{Bosnian} {Native} {1} \\[-2pt]
 
 \cvskill{English} {C1} {0.9} \\[-2pt]
 
-\cvskill{Russian} {A2} {0.3} \\[-2pt]
+\cvskill{Russian} {A2-B1} {0.4} \\[-2pt]
 
 %\vfill\null
 %\cvqrcode{0.7}
@@ -415,7 +415,7 @@ Hallein Keltenschach 2023}
 
 \cvmetaevent
 {Competitive Programming}
-{Preferably coding in C++}
+{Preferably competing in C++}
 {}
 {Google Hashcode\\
 \href{https://github.com/development-with-benjamin/adventofcode}{Advent of Code}\\
@@ -428,7 +428,8 @@ Hallein Keltenschach 2023}
 {Schafberg\\
 Traunstein\\
 Sonnenstein\\
-Gaisberg}
+Gaisberg\\
+Schlossalm}
 
 \end{leftcolumn}
 \begin{rightcolumn}
@@ -437,7 +438,7 @@ Gaisberg}
 %----------------------------------------------------------------------------------------
 \fcolorbox{white}{darkcol}{\begin{minipage}[c][3.5cm][c]{1\mpwidth}
 	\begin {center}
-		\HUGE{ \textbf{ \textcolor{white}{ \uppercase{ Benjamin Halilovic } } } } \\[-24pt]
+		\LARGE{ \textbf{ \textcolor{white}{ Benjamin Halilovic } } } \\[-10pt]
 		\textcolor{white}{ \rule{0.1\textwidth}{1.25pt} } \\[4pt]
 		\large{ \textcolor{white} {Software Engineer - Machine Learning \& Signal Processing} }
 	\end {center}
@@ -448,13 +449,13 @@ Gaisberg}
 %	EDUCATION
 %----------------------------------------------------------------------------------------
 %\vfill\null
-\cvsection{EDUCATION}
+\cvsection{Education}
 
 \cvevent
     {\textbf{2022 - ongoing}}
     {\small{MSc. in Applied Image and Signal Processing}}
     {Paris Lodron University of Salzburg \newline University of Applied Sciences of Salzburg}
-    {\small{Master Thesis:} tbd}
+    {\small{Master Thesis: \newline Optimization of MTI in particle accelerators via GP-MPC}}
     {}
 \vfill\null
 
@@ -462,7 +463,7 @@ Gaisberg}
     {\textbf{2018 - 2022}}
     {\small{BSc. in Information Technology and System Management}}
     {University of Applied Sciences of Salzburg}
-    {\small{Bachelor Thesis: \newline Risk Level Mitigation of Ransomware through Vulnerability Management}}
+    {\small{Bachelor Thesis: \newline Risk level mitigation of ransomware through vulnerability management}}
     {}
 \vfill\null
 
@@ -483,19 +484,20 @@ Gaisberg}
 %---------------------------------------------------------------------------------------
 %	WORK EXPERIENCE
 %----------------------------------------------------------------------------------------
-\cvsection{WORK EXPERIENCE}
+\cvsection{Work Experience}
 
 \cvevent
 	{\textbf{Mar '22 - ongoing}}
 	{Software Engineer for Quality Assurance}
 	{Commend International GmbH \newline Saalachstraße 86a, 5020 Salzburg }
 	{\begin{itemize}
-        \item \small{Development of Python Library for Test Automation of in House build Hardware and Technology Stack}
-        \item \small{Main emphasis on implementation of Algorithms for Audio Quality Assessment of Devices}
-        \item \small{Development of IT infrastructure modules in Python that enable interaction with audio measurement equipment}
+        \item \small{Development of python library for test automation of in house build hardware and technology stack}
+        \item \small{Main emphasis on implementation of algorithms for audio quality assessment of devices}
+        \item \small{Development of IT infrastructure modules in python that enable interaction with audio measurement equipment}
+        \item \small{Implementation of automated tests for behavioral testing of text-to-speech; speech-to-text interactive voice bot for stability, latency, error resilience and user experience}
     \end{itemize}} {}
 \vfill\null
-\vspace{-8px}
+\vspace{-0.5\baselineskip}
 \cvevent
 	{\textbf{Aug '18 - Jan '22}}
 	{Junior IT Security Analyst}
@@ -612,9 +614,10 @@ Gaisberg}
 %	PERSONAL DETAILS
 %----------------------------------------------------------------------------------------
 \vfill\null
-\cvsection{EXTRACURRICULAR}
+\cvsection{Extracurricular}
 \vspace{-0.3cm}
 \begin{itemize}
+	\item $1^{st}$ Place in \href{https://www.fh-salzburg.ac.at/en/about-fh-salzburg/news-and-events/news?tx_news_pi1%5Baction%5D=detail&tx_news_pi1%5Bcontroller%5D=News&tx_news_pi1%5Bnews%5D=4120&cHash=62d1ec8864492e7b9b17af9e60e6c6c3}{Salz 21 AI Hackathon} (2023)
   \item ÖH FH Salzburg - Versanstaltungsreferent (2021 - 2022)
   \item ÖH FH Salzburg - Veranstaltungsteammitglied (2018 - 2022)
   \item Annual Advent of Code Participant
